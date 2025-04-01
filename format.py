@@ -8,7 +8,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 
 # Load the original workbook
-myWorkbook = openpyxl.load_workbook("Poorly_Organized_Data_1.xlsx")
+myWorkbook = openpyxl.load_workbook("Poorly_Organized_Data_1.xlsx", read_only=True)
 currentSheet = myWorkbook.active
 
 # Create a new workbook
@@ -27,9 +27,12 @@ for row in currentSheet.iter_rows(min_row=2, values_only=True):
     # Ensure the sheet exists
     if category not in newWorkbook.sheetnames:
         newSheet = newWorkbook.create_sheet(title=str(category))
-        newSheet.append(["Last Name", "First Name", "Student ID", "Grade"])  # Add headers
-        row_counters[category] = 2  # Start row count at 2
+        newSheet.append(["Last Name", "First Name", "Student ID", "Grade"])  # Add headers 
+        row_counters[category] = 3  # Start row count at 3
+        newSheet.insert_rows(1) # Inserts a row into the first row
+        newSheet.auto_filter.ref = f"A1:D1" # Sets a filter in the first row from column A to D
 
+    
     # Split name into parts
     lstOrganizedData = full_name.split("_")
 
@@ -42,3 +45,8 @@ for row in currentSheet.iter_rows(min_row=2, values_only=True):
 
     # Increment row counter for this sheet
     row_counters[category] += 1
+
+newWorkbook.save(filename="Organized_Data.xlsx") # Saves the new workbook
+
+newWorkbook.close() # Closes the new workbook
+myWorkbook.close() # Closes the loaded workbook
