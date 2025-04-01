@@ -2,16 +2,15 @@
 Garrett Safsten, Jack Mair, Ryan Baldwin, Tanner Crookston
 Description:
 """
-# This pulls in the librries we will need.
+# This pulls in the libraries we will need.
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
 
-myWorkbook = openpyxl.load_workbook('Poorly_Organized_Data_1.xlsx')
-
+myWorkbook = openpyxl.load_workbook("Poorly_Organized_Data_1.xlsx")
 newWorkbook = Workbook()
 
-currentSheet = newWorkbook.active
+currentSheet = myWorkbook.active
 
 # Iterate through rows in the original data sheet
 for row in currentSheet.iter_rows(min_row=2, values_only=True):
@@ -20,5 +19,5 @@ for row in currentSheet.iter_rows(min_row=2, values_only=True):
     # Check if the sheet already exists, if not, create one
     if value not in newWorkbook.sheetnames:
         newWorkbook.create_sheet(title=str(value))
-
-print(newWorkbook.sheetnames)
+    if 'Sheet' in newWorkbook.sheetnames:
+        del newWorkbook['Sheet']
