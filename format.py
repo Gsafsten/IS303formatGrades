@@ -7,9 +7,18 @@ import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
 
-myWorkbook = openpyxl.load_workbook('Poorly_Organized_Data_1')
+myWorkbook = openpyxl.load_workbook('Poorly_Organized_Data_1.xlsx')
 
-newWorkbook = Workbook("Organized")
+newWorkbook = Workbook()
 
+currentSheet = newWorkbook.active
 
+# Iterate through rows in the original data sheet
+for row in currentSheet.iter_rows(min_row=2, values_only=True):
+    value = row[0]  # Column A value
 
+    # Check if the sheet already exists, if not, create one
+    if value not in newWorkbook.sheetnames:
+        newWorkbook.create_sheet(title=str(value))
+
+print(newWorkbook.sheetnames)
