@@ -5,7 +5,7 @@ Description: Script to reorganize Excel data with additional summary statistics
 # This pulls in the libraries we will need.
 import openpyxl
 from openpyxl import Workbook
-from openpyxl.styles import Font, Bold
+from openpyxl.styles import Font
 import statistics
 
 # Load the original workbook
@@ -45,7 +45,9 @@ for row in currentSheet.iter_rows(min_row=2, values_only=True):
     if category not in newWorkbook.sheetnames:
         newSheet = newWorkbook.create_sheet(title=str(category))
         newSheet.append(["Last Name", "First Name", "Student ID", "Grade"])  # Add headers
-        row_counters[category] = 2  # Start row count at 2
+        row_counters[category] = 3  # Start row count at 3
+        newSheet.insert_rows(1) # Inserts a row into the first row
+        newSheet.auto_filter.ref = "A1:D1" # Sets a filter in the first row from column A to D
     
     # Split name into parts
     lstOrganizedData = full_name.split("_")
@@ -90,4 +92,7 @@ for category, grades in category_grades.items():
     sheet["G6"] = student_count
 
 # Save the workbook
-newWorkbook.save("Reorganized_Data_with_Stats.xlsx")
+newWorkbook.save("Organized_Data.xlsx")
+
+newWorkbook.close() # Closes the new workbook
+myWorkbook.close() # Closes the loaded workbook
