@@ -1,6 +1,6 @@
 """
 Garrett Safsten, Jack Mair, Ryan Baldwin, Tanner Crookston
-Description: Script to reorganize Excel data with additional summary statistics
+Description: Script to reorganize Excel data from an existing file with additional summary statistics, formatting, functions, and filters. 
 """
 # This pulls in the libraries we will need.
 import openpyxl
@@ -45,8 +45,7 @@ for row in currentSheet.iter_rows(min_row=2, values_only=True):
     if category not in newWorkbook.sheetnames:
         newSheet = newWorkbook.create_sheet(title=str(category))
         newSheet.append(["Last Name", "First Name", "Student ID", "Grade"])  # Add headers
-        row_counters[category] = 3  # Start row count at 3
-        newSheet.insert_rows(1) # Inserts a row into the first row
+        row_counters[category] = 2  # Start row count at 2
         newSheet.auto_filter.ref = "A1:D1" # Sets a filter in the first row from column A to D
     
     # Split name into parts
@@ -73,16 +72,15 @@ for category, grades in category_grades.items():
     median_grade = statistics.median(grades)
     student_count = len(grades)
     
-    # Add headers in column F
+    # Add statistics in column F
+    sheet["F1"] = "Summary Statistics"
+    sheet["G1"] = "Value"
     sheet["F2"] = "Highest Grade"
     sheet["F3"] = "Lowest Grade"
     sheet["F4"] = "Mean Grade"
     sheet["F5"] = "Median Grade"
     sheet["F6"] = "Number of Students"
     
-    # Add bold formatting to headers
-    for row in range(2, 7):
-        sheet[f"F{row}"].font = Font(bold=True)
     
     # Add data in column G
     sheet["G2"] = highest_grade
