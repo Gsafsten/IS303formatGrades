@@ -89,5 +89,20 @@ for category, grades in category_grades.items():
     sheet["G5"] = round(median_grade, 2)  # Round to 2 decimal places
     sheet["G6"] = student_count
 
+    # Bold headers in columns A, B, C, D, F, G
+    for col in ["A", "B", "C", "D", "F", "G"]:
+        sheet[f"{col}1"].font = Font(bold=True)
+    
+    # Adjust column widths based on header length + 5
+    column_widths = {
+        "A": len("Last Name") + 5,
+        "B": len("First Name") + 5,
+        "C": len("Student ID") + 5,
+        "D": len("Grade") + 5,
+        "F": len("Highest Grade") + 5,
+        "G": len("Number of Students") + 5
+    }
+    for col, width in column_widths.items():
+        sheet.column_dimensions[col].width = width
 # Save the workbook
 newWorkbook.save("Reorganized_Data_with_Stats.xlsx")
